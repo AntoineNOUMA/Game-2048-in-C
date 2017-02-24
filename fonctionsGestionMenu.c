@@ -116,49 +116,18 @@ int chargement(jeu *p, char nomSauvegarde[])
  * 4 - Terminer le programme
  * Retourne la valeur saisie par l'utilisateur (sasie controlée)
  */
-/*int menu()
-{
-  char choixMenu;
-  
-  do
-  { 
-      printf("========== Menu ==========\n\n");
-      printf("1 - Jouer\n");
-      printf("2 - Sauvegarder\n");
-      printf("3 - Charger\n");
-      printf("4 - Terminer le programme\n\n");
-      printf("Quel est votre choix ? \n\n");
-      scanf("%c", &choixMenu);
-      printf("\n");
-  
-  switch (choixMenu)
-  {
-    case '1':
-       printf("Vous avez choisi de jouer.\n\n");
-       return (choixMenu);
-       break;
-    case '2':
-       printf("Vous avez choisi de sauvegarder.\n\n");
-       return (choixMenu);
-       break;
-    case '3':
-         printf("Vous avez choisi de charger.\n\n");
-         return (choixMenu);
-         break;
-    case '4':
-       printf("Vous avez choisi de terminer le programme.\n\n");
-       return (choixMenu);
-       break;
-    default:
-        printf("######################################\n");
-        printf("##Veuillez saisir un nombre correct.##\n");
-        printf("######################################\n\n");
-        //return (choixMenu);
-        break;
-   }
-  
-  }while (choixMenu<1 || choixMenu>4);
-  system("pause");
- 
-  return 0;
-}*/
+
+int menu() {
+	int saisie;
+	do  {
+		printf("     1 - Jouer\n     2 - Sauvegarder\n     3 - Charger\n     4 - Terminer le programme\n     5 - Tableau des scores\n     6 - Options\n");
+		scanf("%d%*[^\n]",&saisie);
+		getchar(); 					//eviter une boucle infinie si une lettre est tapée
+
+		printf("\033[1;1H");    	//repositionne le curseur
+		printf("\033[2J");			//clear
+	} while (saisie < 0 || saisie > 6);
+
+	return saisie;
+}
+

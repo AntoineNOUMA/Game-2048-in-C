@@ -27,21 +27,28 @@ int saisieD()
 	{
                 //On affiche quelle flèche a été saisie
 		
-		if (touche == KEY_DOWN)
+		switch(touche)
+                {
+                    case KEY_DOWN :
                         return 0;
-                else if (touche == KEY_RIGHT)
+                        break;
+                    case KEY_RIGHT :
                         return 1;
-                else if (touche == KEY_UP)
-			return 2;
-		else if (touche == KEY_LEFT)
+                        break;
+                    case KEY_UP :
+                        return 2;
+                        break;
+                    case KEY_LEFT :
                         return 3;
-		
-		else //touche vaut la valeur NO_KEY
-			printf("Pas de flèche saisie");
-		printf("\n");
-
-		touche = lectureFleche();//On lit une flèche (ou la touche echap)
-
+                        break;
+                    default : 
+                        printf("Pas de flèche saisie");
+                        break;
+                        
+                        
+               }
+                printf("\n");
+                touche = lectureFleche();//On lit une flèche (ou la touche echap)
 	}
 	finTerminalSansR();
         return -1;
@@ -509,24 +516,22 @@ int mouvementColonnes(jeu * p, int direction)
  */
 int mouvement(jeu * p, int direction)
 {
-    if (direction == 0) 
+    switch(direction)
     {
-	return mouvementColonnes(p, -1);
-    }
-    else if (direction == 1) 
-    {
-	return mouvementLignes(p, -1);
-    }
-    else if (direction == 2) 
-    {
-	return mouvementColonnes(p, 1);
-    }
-    else if (direction == 3) 
-    {
-	return mouvementLignes(p, 1);
-    }
-    else 
-    {
-	return 0;
+        case 0 :
+            return mouvementColonnes(p, -1);
+            break;
+        case 1 :
+            return mouvementLignes(p, -1);
+            break;
+        case 2 :
+            return mouvementColonnes(p, 1);
+            break;
+        case 3 :
+            return mouvementLignes(p, 1);
+            break;
+        default :
+            return 0;
+            break;
     }
 }

@@ -57,15 +57,15 @@ void ajouteValAlea(jeu * p)
 	tab = (int * ) malloc(nbCasesLibres * (sizeof(int)));
         for (i = 0; i < n; i++) 
         {
-            if (((* p).grille)[i] == 0) 
+            if (((* p).grille)[i] == 0) // si on a une case vide, on ajoute l'indice de la grille dans tab
             {
-                tab[j] = i;				//dès qu'on a une case vide, on ajoute l'indice de la grille dans le tab
+                tab[j] = i;		
                 j++;
             }
 	}
         
-        int indiceAleatoire = rand() % nbCasesLibres;		//on prend une valeur aléatoire inférieure ou égale au nb de cases vides
-	int indiceAleatoire2 = tab[indiceAleatoire];			// on regarde l'indice de la valeur précédente dans tab
+        int indiceAleatoire = rand() % nbCasesLibres;   //on prend une valeur aléatoire inférieure ou égale au nb de cases vides
+	int indiceAleatoire2 = tab[indiceAleatoire];	// on regarde l'indice de la valeur précédente dans tab
 	int valeurAleatoire;
 	
         if (rand()%2 == 0) 

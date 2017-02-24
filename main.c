@@ -27,10 +27,12 @@ int main()
     
     initialiseJeu(p,n,valMax);
     
-    clear_terminal();
+    printf("\033[0;0H");
+    printf("\033[2J"); 
+
     
     int saisieMenu, slot, options, options2;
-    char saisieConfirmation;
+ 
     
     do 
     {
@@ -224,5 +226,5 @@ int main()
 
     } while (saisieMenu != 4);
     
-	return 0;
+    return EXIT_SUCCESS;
 }

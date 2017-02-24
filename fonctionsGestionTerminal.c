@@ -5,59 +5,79 @@ static struct termios   save_termios;
 static int term_saved;
 static int fd = 0;
 
-static int tty_raw() {
-  struct termios  buf;
-
-  if (tcgetattr(fd, &save_termios) < 0)
-    return -1;
-
-  buf = save_termios;
-  buf.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-  buf.c_iflag &= ~(BRKINT | ICRNL | ISTRIP | IXON);
-  buf.c_cflag &= ~(CSIZE | PARENB);
-  buf.c_cflag |= CS8;
-  buf.c_cc[VMIN] = 1;
-  buf.c_cc[VTIME] = 0;
-
-  if (tcsetattr(fd, TCSAFLUSH, &buf) < 0)
-    return -1;
-
-  term_saved = 1;
-  return 0;
+static int tty_raw() 
+{
+    struct termios  buf;
+    
+    if (tcgetattr(fd, &save_termios) < 0)
+    {
+        return -1;
+    }
+    
+    buf = save_termios;
+    buf.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+    buf.c_iflag &= ~(BRKINT | ICRNL | ISTRIP | IXON);
+    buf.c_cflag &= ~(CSIZE | PARENB);
+    buf.c_cflag |= CS8;
+    buf.c_cc[VMIN] = 1;
+    buf.c_cc[VTIME] = 0;
+    
+    if (tcsetattr(fd, TCSAFLUSH, &buf) < 0)
+    {
+        return -1;
+    }
+    
+    term_saved = 1;
+    
+    return 0;
 }
 
-static void tty_reset() {
-  if (term_saved)
+
+static void tty_reset() 
+{
+    if (term_saved)
+    
     if (tcsetattr(fd, TCSAFLUSH, &save_termios) < 0)
-      exit(-1);
+    {
+        exit(-1);
+    }
 }
 
 
-/*
+/*!Définition de la fonction finTerminalSansR
+ * 
  * Fin du mode saisie "sans retour chariot" : on revient à la normale
  */
 void finTerminalSansR()
 {
-  
-   if (term_saved)
+    if (term_saved)
+    
     if (tcsetattr(fd, TCSAFLUSH, &save_termios) < 0)
-      exit(-1);
+     
+    exit(-1);
 }
 
-/*
+
+/*!Définition de la fonction debutTerminalSansR
+ * 
  * Début du mode saisie "sans retour chariot" : 
  * Il n'est pas nécessaire d'appuyer sur la touche entrée pour saisir une valeur.
  * La valeur saisie ne s'affiche pas.
  */
 int debutTerminalSansR()
 {
-  if (tty_raw() != 0)
-    return 0;
-  atexit(tty_reset);
-  return 1;
+    if (tty_raw() != 0)
+    {
+        return 0;
+    }
+  
+    atexit(tty_reset);
+  
+    return 1;
 }
 
-/*
+/*!Définition de la fonction lectureFleche()
+ * 
  * Lecture d'une touche. La fonction renvoie :
  *   - KEY_UP, KEY_DOWN, KEY_LEFT ou KEY_RIGHT si l'utilisateur appuie sur une des flèches
  *   - KEY_ESCAPE si l'utilisateur appuie sur la touche Echap
@@ -86,7 +106,9 @@ toucheFleche lectureFleche()
   return NO_KEY;
 }
 
-/*
+
+/*!Définition de la fonction clear_terminal()
+ * 
  * Fonction effaçant le terminal
  */
 void clear_terminal()
@@ -95,10 +117,15 @@ void clear_terminal()
   printf("\033[0;0H");
 }
 
-/*
+/*!Définition de la fonction color_printf(couleur fg, couleur bg, const char * format, ...)
+ * 
  * Printf en couleur. Les deux premiers paramètres sont les couleurs d'écriture et de fond (mettre une des valeurs parmi : 
  * BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN et WHITE).
  * Les parmètres suivants sont comme le printf "normal" : chaîne de format puis toutes les valeurs à afficher
+ * 
+ * \param fg : couleur d'écriture
+ * \param bg : couleur de fond
+ * \param format : chaîne de format
  */
 int color_printf(couleur fg, couleur bg, const char * format, ...)
 {
@@ -121,9 +148,10 @@ int color_printf(couleur fg, couleur bg, const char * format, ...)
  */
 couleur couleurNombre(int x) 
 {				
-    couleur tabCouleur[6] = {RED,GREEN,YELLOW,BLUE,MAGENTA,CYAN};
+    couleur tabCouleur[6] = {RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN};
     int i = 2;
     int j = 0;
+    
     if (x == 0) 
     {
         return BLACK;
@@ -149,7 +177,8 @@ couleur couleurNombre(int x)
 
 /*Définition de la fonction tailleNombre
  * 
- * Permet d'attribuer une taille à un nombre en fonction de sa valeur
+ * Permet d'attribuer une taille à un nombre en fonction de son nombre de chiffre                                      JjkjJ ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+ * 
  * \param x : entier représentant un nombre dans la grille de jeu
  */
 int tailleNombre(int x)
@@ -190,11 +219,13 @@ int tailleNombre(int x)
     }
 
 	return 8;
-} 							//retourne la taille du x donné
+} 
 
 /*Définition de la fonction affichageNombre
  * 
- * Permet de centrer le nombre dans la ligne de l'écrire en blanc avec le fond correspondant à sa valeur
+ * Permet de centrer le nombre dans la case en fonction de son nombre de chiffre et de l'écrire en blanc avec
+ * le fond correspondant à sa valeur
+ * 
  * \param x : entier représentant un nombre dans la grille de jeu
  */
 void affichageLigne(int x) 
@@ -203,33 +234,50 @@ void affichageLigne(int x)
     couleur white = WHITE;
     int tailleX = tailleNombre(x);
     
-    if (x == 0) {
-		color_printf(white,tabCouleur,"   .   ");
-	}
-	else if (tailleX == 1) {
-		color_printf(white,tabCouleur,"   %d   ",x);
-	}
-	else if (tailleX == 2) {
-		color_printf(white,tabCouleur,"  %d   ",x);
-	}
-	else if (tailleX == 3) {
-		color_printf(white,tabCouleur,"  %d  ",x);
-	}
-	else if (tailleX == 4) {
-		color_printf(white,tabCouleur," %d  ",x);	
-	}
-	else if (tailleX == 5) {
-		color_printf(white,tabCouleur," %d ",x);
-	}
-	else if (tailleX == 6) {
-		color_printf(white,tabCouleur,"%d ",x);
-	}
-	else if (tailleX == 7) {
-		color_printf(white,tabCouleur,"%d",x);
-	}
-	else {
-		printf("Erreur");
-	}
+    if (x == 0) 
+    {
+        color_printf(white,tabCouleur,"   .   ");
+    }
+    
+    else if (tailleX == 1) 
+    {
+        color_printf(white,tabCouleur,"   %d   ",x);
+    }
+    
+    else if (tailleX == 2) 
+    {
+        color_printf(white,tabCouleur,"  %d   ",x);
+    }
+	
+    else if (tailleX == 3) 
+    {
+        color_printf(white,tabCouleur,"  %d  ",x);
+    }
+	
+    else if (tailleX == 4) 
+    {
+        color_printf(white,tabCouleur," %d  ",x);	
+    }
+	
+    else if (tailleX == 5) 
+    {
+        color_printf(white,tabCouleur," %d ",x);
+    }
+	
+    else if (tailleX == 6) 
+    {
+        color_printf(white,tabCouleur,"%d ",x);
+    }
+    
+    else if (tailleX == 7) 
+    {
+        color_printf(white,tabCouleur,"%d",x);
+    }
+    
+    else 
+    {
+        printf("Erreur");
+    }
 }
 
 void affichage(jeu * p) 

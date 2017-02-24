@@ -35,31 +35,6 @@ void libereMemoire(jeu * p)
 }
 
 /*!
- * Définition de la fontion affichage
- *
- * Fonction affichant la grille à l'écran.
- * 
- * \param p : pointeur sur la partie que l'on souhaite afficher
- */
-/*void affichage(jeu * p)
-{
-    int i=0;
-    
-    while(i<((*p).n)*((*p).n))
-    {
-        printf("%d",(*p).grille[i]);
-        printf("\t");
-        i++;
-        
-        if(i%(*p).n==0)
-        {
-            printf("\n\n\n");
-        }
-    }           
-}*/
-
-
-/*!
  * Définition de la fonction gagne
  *  
  * Retourne 1 si la partie est gagnée, 0 sinon
@@ -144,20 +119,6 @@ int score(jeu *p)
     }
 	
     return score;
-}
-
-int menu() {
-	int saisie;
-	do  {
-		printf("     1 - Jouer\n     2 - Sauvegarder\n     3 - Charger\n     4 - Terminer le programme\n     5 - Tableau des scores\n     6 - Options\n");
-		scanf("%d%*[^\n]",&saisie);
-		getchar(); 					//eviter une boucle infinie si une lettre est tapée
-
-		printf("\033[1;1H");    	//repositionne le curseur
-		printf("\033[2J");			//clear
-	} while (saisie < 0 || saisie > 6);
-
-	return saisie;
 }
 
 void fichierExiste(char nomFichier[], int slot) {

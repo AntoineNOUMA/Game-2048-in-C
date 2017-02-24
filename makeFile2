@@ -1,0 +1,23 @@
+a.out : main.o fonctionsGestionTerminal.o fonctionsGestionCases.o fonctionsGestionMenu.o fonctionsGestionMouvements.o fonctionsGestionPartie.o
+	gcc -Wall main.o fonctionsGestionTerminal.o fonctionsGestionCases.o fonctionsGestionMenu.o fonctionsGestionMouvements.o fonctionsGestionPartie.o -lm
+
+main.o : main.c myHeader.h
+	gcc -c main.c
+
+fonctionsGestionTerminal.o : fonctionsGestionTerminal.c myHeader.h
+	gcc -c fonctionsGestionTerminal.c
+
+fonctionsGestionCases.o : fonctionsGestionCases.c myHeader.h
+	gcc -c fonctionsGestionCases.c
+
+fonctionsGestionMenu.o : fonctionsGestionMenu.c myHeader.h
+	gcc -c fonctionsGestionMenu.c
+
+fonctionsGestionMouvements.o : fonctionsGestionMouvements.o myHeader.h
+	gcc -c fonctionsGestionMouvements.c
+
+fonctionsGestionPartie.o : fonctionsGestionPartie.o myHeader.h
+	gcc -c fonctionsGestionPartie.c
+
+clean: 
+rm -f *.o *~ *.txt

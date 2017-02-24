@@ -70,6 +70,8 @@ typedef enum
 void clear_terminal();
 int color_printf(couleur fg, couleur bg, const char * format, ...);
 couleur couleurNombre(int x);
+void affichageLigne(int x);
+void affichage(jeu * p);
 int debutTerminalSansR();
 void finTerminalSansR();
 
@@ -114,12 +116,11 @@ toucheFleche lectureFleche();
 //########################################//
 void initialiseJeu (jeu * p, int n, int valMax);
 int tailleNombre(int x);
-void affichageLigne(int x);
-void affichage(jeu * p);
 int score(jeu *p);
 void rajouteScore(int score);
 int gagne(jeu * p);
 int perdu(jeu * p);
+void libereMemoire(jeu * p);
 void rangerTab(int tab[], int taille);
 void fichierExiste(char nomFichier[], int slot);
 int finPartie (jeu * p);
