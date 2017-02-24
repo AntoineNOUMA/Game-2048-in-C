@@ -11,14 +11,27 @@
  */
 int jouer(jeu * p)
 {
-    if (gagne(p) || perdu(p))
+    int saisie;
+    int mouvement2 = 0;
+    
+    do  
     {
-        return 1;
-    }
-    else 
-    {
-        return 0;
-    }
+        affichage(p);
+        printf("score : %d\n\n", score(p));
+	saisie = saisieD();
+	mouvement2 = mouvement(p, saisie);
+	affichage(p);
+		
+        if (mouvement2 == 1) 
+        {
+            usleep(100000);    //pause de 0.1ms temps en nanoseconde
+            ajouteValAlea(p);
+	}
+		
+        affichage(p);
+    } while (saisie != -1 && finPartie(p) == 0);
+
+    return finPartie(p);
 }
 
 /*!
@@ -29,26 +42,33 @@ int jouer(jeu * p)
  * 
  * \param p : pointeur sur la partie courante à sauvegarder
  */
-int sauvegarde(jeu * p)
+int sauvegarde(jeu *p, char nomSauvegarde[])
 {
-    int * sauvegardeGrille;
-    int i=0;
-    while(i<((*p).n)*((*p).n))
+    FILE * file = fopen(nomSauvegarde, "wt");
+
+    if (file == NULL) 
     {
-        sauvegardeGrille=(*p).grille;
-        printf("%d",*sauvegardeGrille);
-        printf("\t");
-        i++;
-        (*p).grille++;
+        printf("ERROR");
+        return 0;
+    }
+
+    else 
+    {
+        int i, j;
         
-        if(i%(*p).n==0)
+        for (i = 0; i < (*p).n; i++) 
         {
-            printf("\n\n\n");
-        }   
-        
-        
-    }   
-    return 0;
+            for (j = 0; j < (*p).n; j++) 
+            {
+                fprintf(file, "%d ", getVal(p, i, j));
+            }    
+            
+            fprintf(file,"\n");
+        }
+    }
+    
+    fclose(file);
+    return 1;
 }
 
 /*!
@@ -59,9 +79,31 @@ int sauvegarde(jeu * p)
  * 
  * \param p : adresse du pointeur sur le jeu
  */
-int chargement(jeu * p)
+int chargement(jeu *p, char nomSauvegarde[]) 
 {
-    return 0;
+    FILE * file = fopen(nomSauvegarde, "rt");
+    
+    if (file == NULL) 
+    {
+        printf("ERREUR\n");
+	return 0;
+    }
+    
+    else 
+    {
+        int i, j, k;
+        for (i=0; i < (*p).n; i++) 
+        {
+            for (j = 0; j < (*p).n; j++) 
+            {
+                fscanf(file, "%d", &k);
+                setVal(p, i, j, k);
+            }
+        }
+    }
+    
+    fclose(file);
+    return 1;
 }
 
 /*!
@@ -74,7 +116,7 @@ int chargement(jeu * p)
  * 4 - Terminer le programme
  * Retourne la valeur saisie par l'utilisateur (sasie controlée)
  */
-int menu()
+/*int menu()
 {
   char choixMenu;
   
@@ -119,4 +161,4 @@ int menu()
   system("pause");
  
   return 0;
-}
+}*/

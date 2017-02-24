@@ -7,7 +7,7 @@
  */
 int indiceValide(jeu * p, int i, int j)
 {
-    if(i>=0 && i<(*p).n && j>=0 && j<(*p).n)
+    if(i >= 0 && i < (* p).n && j >= 0 && j < (* p).n)
     {
         return 1;
     }
@@ -25,7 +25,9 @@ int indiceValide(jeu * p, int i, int j)
  */
 int caseVide(jeu * p, int i, int j)
 {
-    if(getVal(p,i,j)==0) 
+    int x = getVal(p,i,j);
+    
+    if(x == 0) 
     {
         return 1;
     }
@@ -44,20 +46,40 @@ int caseVide(jeu * p, int i, int j)
  */
 void ajouteValAlea(jeu * p)
 {
-    if((*p).nbCasesLibres>=1)
+    int i;
+    int j = 0;
+    int nbCasesLibres = (* p).nbCasesLibres;
+    int n = ((* p).n) * ((* p).n);
+    
+    if (nbCasesLibres > 0) 
     {
-	srand(time(NULL));
-    	int j=rand()%(2);
-	int k=rand()%(p->n*p->n);
+        int * tab;
+	tab = (int * ) malloc(nbCasesLibres * (sizeof(int)));
+        for (i = 0; i < n; i++) 
+        {
+            if (((* p).grille)[i] == 0) 
+            {
+                tab[j] = i;				//dès qu'on a une case vide, on ajoute l'indice de la grille dans le tab
+                j++;
+            }
+	}
         
-	if(j==0)	
+        int indiceAleatoire = rand() % nbCasesLibres;		//on prend une valeur aléatoire inférieure ou égale au nb de cases vides
+	int indiceAleatoire2 = tab[indiceAleatoire];			// on regarde l'indice de la valeur précédente dans tab
+	int valeurAleatoire;
+	
+        if (rand()%2 == 0) 
         {
-            (*p).grille[k]=2;
-        }
-    	else 		
+            valeurAleatoire = 2;
+	}
+		
+        else 
         {
-            (*p).grille[k]=4;
-        }
+            valeurAleatoire = 4;
+	}
+
+	((* p).grille)[indiceAleatoire2] = valeurAleatoire;  //on ajoute soit 2 soit 4 dans la case
+        (* p).nbCasesLibres--;
     }
 }
 
@@ -73,9 +95,10 @@ void ajouteValAlea(jeu * p)
  */
 int getVal(jeu * p, int ligne, int colonne)
 {
-    if(indiceValide(p, ligne, colonne)==1)
+    if(indiceValide(p, ligne, colonne) == 1)
     {
-        return((*p).grille[((*p).n)*(ligne)+colonne]);
+        int x = ((* p).n) * (ligne) + colonne;   //formule pour retrouver une case
+        return((* p).grille[x]); 
     }
     
     else
@@ -99,13 +122,20 @@ int getVal(jeu * p, int ligne, int colonne)
  */
 int setVal(jeu * p, int ligne, int colonne, int val)
 {
-    if(getVal(p, ligne, colonne)!=-1)
+    if (getVal(p,ligne,colonne) == 0 && val > 0) 
     {
-        ((*p).grille[((*p).n)*(ligne)+colonne])=val;
-        return 1;
+        ((* p).nbCasesLibres)--;	
     }
-    else
+    
+    else if (getVal(p,ligne,colonne) != 0 && val == 0 ) 
     {
-        return 0;
+	((* p).nbCasesLibres)++;
+    }
+    
+    int x = ((* p).n) * (ligne) + colonne;   //formule pour retrouver une case
+    
+    if(indiceValide(p, ligne, colonne) == 1)
+    {
+        ((* p).grille[x]) = val; 
     }
 }

@@ -5,12 +5,14 @@
  * Created on 23 janvier 2017, 13:17
  */
 
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
-#include<string.h>
+#include <string.h>
 #include <unistd.h>
-#include<time.h>        //necesaire pour la génération de nombres aléatoire
+#include <termios.h>
+#include <math.h>
+#include <time.h>        //necesaire pour la génération de nombres aléatoire
 
 
 /*Définition du type structuré jeu
@@ -37,29 +39,39 @@ typedef struct
  * Permet de colorer le terminal
  */
 typedef enum
+  {
+    BLACK,
+    RED,
+    GREEN,
+    YELLOW,
+    BLUE,
+    MAGENTA,
+    CYAN,
+    WHITE
+  } couleur;
+  
+ /*Définition du type énuméré touche
+  * 
+  * Touches du clavier correspondant aux flèches (haut, bas, gauche, droite) + touche echap + autres touches
+  */ 
+typedef enum
 {
-  noir,
-  rouge,
-  vert,
-  jaune,
-  bleu,
-  magenta,
-  cyan,
-  blanc
-}couleur;
+	NO_KEY,
+	KEY_ESCAPE,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_RIGHT,
+	KEY_LEFT
+} toucheFleche;
 
-/*
- * Fonction effaçant le terminal
- */
-void effaceTerminal();
-
-/*
- * Printf en couleur. Les deux premiers paramètres sont les couleurs d'écriture et de fond (mettre une des valeurs parmi : 
- * BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN et WHITE).
- * Les parmètres suivants sont comme le printf "normal" : chaîne de format puis toutes les valeurs à afficher
- */
-int colorPrintf(couleur fg, couleur bg, const char * format, ...);
-
+//########################################//
+//### Fonctions de gestion du terminal ###//
+//########################################//
+void clear_terminal();
+int color_printf(couleur fg, couleur bg, const char * format, ...);
+couleur couleurNombre(int x);
+int debutTerminalSansR();
+void finTerminalSansR();
 
 //######################################//
 //### Fonctions de gestion des cases ###//
@@ -73,26 +85,41 @@ int setVal(jeu * p, int ligne, int colonne, int val);
 //###################################//
 //### Fonctions de gestion du menu###//
 //###################################//
-int jouer(jeu * p);
-int sauvegarde(jeu * p);
-int chargement(jeu * p);
 int menu();
+int jouer(jeu * p);
+int sauvegarde(jeu * p, char nomSauvegarde[]);
+int chargement(jeu * p, char nomSauvegarde[]);
+void tableauScore();
 
 //###########################################//
 //### Fonctions de gestion des mouvements ###//
 //###########################################//
+int fusionGauche(jeu *p,int ligne);
+int fusionDroite(jeu *p,int ligne);
+int fusionBasse(jeu *p,int ligne);
+int fusionHaute(jeu *p,int ligne);
+int tassageGauche(jeu *p,int ligne);
+int tassageDroit(jeu *p,int ligne);
+int tassageHaut(jeu *p,int ligne);
+int tassageBas(jeu *p,int ligne);
 int mouvementLigne(jeu *p, int ligne, int direction);
 int mouvementLignes(jeu * p, int direction);
 int mouvementColonne(jeu * p, int colonne, int direction);
-int mouvementColonnes(jeu * p, int colonne, int direction);
+int mouvementColonnes(jeu * p, int direction);
 int mouvement(jeu * p, int direction);
+toucheFleche lectureFleche();
 
 //########################################//
 //### Fonctions de gestion de la partie###//
 //########################################//
 void initialiseJeu (jeu * p, int n, int valMax);
-void saisieAvecEspaces(char * chaine, int n);
+int tailleNombre(int x);
+void affichageLigne(int x);
 void affichage(jeu * p);
+int score(jeu *p);
+void rajouteScore(int score);
 int gagne(jeu * p);
 int perdu(jeu * p);
+void rangerTab(int tab[], int taille);
+void fichierExiste(char nomFichier[], int slot);
 int finPartie (jeu * p);

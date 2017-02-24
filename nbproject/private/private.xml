@@ -7,7 +7,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/clementcyrielle/Desktop/2048/main.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/fonctionsGestionPartie.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/fonctionsGestionTerminal.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/fonctionsGestionMouvements.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/fonctionsGestionMenu.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/main.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/fonctionsGestionCases.c</file>
+            <file>file:/Users/clementcyrielle/Desktop/Game-2048-in-C/myHeader.h</file>
         </group>
     </open-files>
 </project-private>

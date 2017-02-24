@@ -35,11 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/couleursTerminal.o \
 	${OBJECTDIR}/fonctionsGestionCases.o \
 	${OBJECTDIR}/fonctionsGestionMenu.o \
 	${OBJECTDIR}/fonctionsGestionMouvements.o \
 	${OBJECTDIR}/fonctionsGestionPartie.o \
+	${OBJECTDIR}/fonctionsGestionTerminal.o \
 	${OBJECTDIR}/main.o
 
 
@@ -61,16 +61,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/2048
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/game-2048-in-c
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/2048: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/game-2048-in-c: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/2048 ${OBJECTFILES} ${LDLIBSOPTIONS}
-
-${OBJECTDIR}/couleursTerminal.o: couleursTerminal.c 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/couleursTerminal.o couleursTerminal.c
+	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/game-2048-in-c ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/fonctionsGestionCases.o: fonctionsGestionCases.c 
 	${MKDIR} -p ${OBJECTDIR}
@@ -92,6 +87,11 @@ ${OBJECTDIR}/fonctionsGestionPartie.o: fonctionsGestionPartie.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/fonctionsGestionPartie.o fonctionsGestionPartie.c
 
+${OBJECTDIR}/fonctionsGestionTerminal.o: fonctionsGestionTerminal.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/fonctionsGestionTerminal.o fonctionsGestionTerminal.c
+
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -103,7 +103,7 @@ ${OBJECTDIR}/main.o: main.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/2048
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/game-2048-in-c
 
 # Subprojects
 .clean-subprojects:

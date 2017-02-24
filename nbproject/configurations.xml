@@ -13,11 +13,11 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>couleursTerminal.c</itemPath>
       <itemPath>fonctionsGestionCases.c</itemPath>
       <itemPath>fonctionsGestionMenu.c</itemPath>
       <itemPath>fonctionsGestionMouvements.c</itemPath>
       <itemPath>fonctionsGestionPartie.c</itemPath>
+      <itemPath>fonctionsGestionTerminal.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -31,6 +31,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>makeFile2</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -42,8 +43,6 @@
       </toolsSet>
       <compileType>
       </compileType>
-      <item path="couleursTerminal.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="fonctionsGestionCases.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="fonctionsGestionMenu.c" ex="false" tool="0" flavor2="0">
@@ -52,7 +51,11 @@
       </item>
       <item path="fonctionsGestionPartie.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="fonctionsGestionTerminal.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="makeFile2" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myHeader.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -77,8 +80,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="couleursTerminal.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="fonctionsGestionCases.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="fonctionsGestionMenu.c" ex="false" tool="0" flavor2="0">
@@ -87,7 +88,11 @@
       </item>
       <item path="fonctionsGestionPartie.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="fonctionsGestionTerminal.c" ex="false" tool="0" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="makeFile2" ex="false" tool="3" flavor2="0">
       </item>
       <item path="myHeader.h" ex="false" tool="3" flavor2="0">
       </item>

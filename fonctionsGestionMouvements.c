@@ -1,5 +1,7 @@
 #include"myHeader.h"
 
+
+
 /*!
  * Définition de la fonction saisieD
  * 
@@ -12,7 +14,351 @@
  * 2 si l'utilisateur souhaite déplacer vers le HAUT
  * 3 si l'utilisateur souhaite déplacer vers la GAUCHE
  */
-int saisieD();
+int saisieD()
+{
+        //Début du mode saisie des flèches ou de la touche Echap sans appuyer sur entrée pour valider
+	debutTerminalSansR();
+
+	toucheFleche touche;//Définition d'une touche
+
+	touche = lectureFleche();//On lit une flèche (ou la touche echap)
+
+	while ( touche != KEY_ESCAPE)//Tant que l'on n'a pas appuyé sur la touche echap
+	{
+                //On affiche quelle flèche a été saisie
+		
+		if (touche == KEY_DOWN)
+                        return 0;
+                else if (touche == KEY_RIGHT)
+                        return 1;
+                else if (touche == KEY_UP)
+			return 2;
+		else if (touche == KEY_LEFT)
+                        return 3;
+		
+		else //touche vaut la valeur NO_KEY
+			printf("Pas de flèche saisie");
+		printf("\n");
+
+		touche = lectureFleche();//On lit une flèche (ou la touche echap)
+
+	}
+	finTerminalSansR();
+        return -1;
+}
+
+int fusionGauche(jeu *p, int ligne) 
+{
+    int i, j;
+    int k = 0;
+    int val = 0;
+    int val2 = 0;
+
+    for (i = 0; i < (*p).n; i++) 
+    {
+        if (getVal(p, ligne, i) != 0) 
+        {
+            val = getVal(p, ligne, i);				//on recup la valeur si non nulle
+			
+            for (j = i+1; j < (*p).n; j++) 
+            {
+                if (getVal(p, ligne, j) != 0) 
+                {
+                    val2 = getVal(p, ligne, j);  //on recupère la valeur de droite
+                    break;
+                }
+            }
+            
+            if (val == val2) 
+            {
+                setVal(p, ligne, i, val + val2); // on les fusionne
+                setVal(p, ligne, j, 0);		 // on supprime la case de droite
+                k++;
+            }
+		
+            val = 0;
+            val2 = 0;
+        }
+    }
+        if (k > 0) 
+        {
+            return 1;         //s'il y a eu fusion retourne 1
+	}
+
+	else 
+        {
+		return 0;
+	}
+}
+
+int fusionDroite(jeu *p, int ligne) 
+{
+    int i, j;
+    int k = 0;
+    int val = 0;
+    int val2 = 0;
+
+    for (i=(*p).n; i >= 0; i--) 
+    {
+        if (getVal(p, ligne, i) != 0) 
+        {
+            val = getVal(p, ligne, i);
+	
+            for (j = i-1; j >= 0; j--) 
+            {
+                if (getVal(p, ligne, j) != 0) 
+                {
+                    val2 = getVal(p, ligne, j);
+                    break;
+		}
+            }
+            
+            if (val == val2) 
+            {
+                setVal(p, ligne, i, val * 2);
+		setVal(p,ligne, j, 0);
+		k++;
+            }
+            
+            val = 0;
+            val2 = 0;
+	}
+    }
+
+    if (k > 0) 
+    {
+        return 1;
+    }
+	
+    else 
+    {
+	return 0;
+    }
+}
+
+int fusionHaute(jeu *p, int colonne) 
+{
+    int i, j;
+    int k = 0;
+    int val = 0;
+    int val2 = 0;
+
+	for (i = 0; i < (*p).n; i++) 
+        {
+            if (getVal(p, i, colonne)!= 0) 
+            {
+                val = getVal(p, i, colonne);
+		
+                for (j=i+1; j < (*p).n; j++) 
+                {
+                    if (getVal(p, j, colonne) != 0) 
+                    {
+                        val2 = getVal(p, j, colonne);
+			break;
+                    }
+		}	
+		
+                //printf("val = %d\n val2 = %d\n",val,val2);
+                
+		if (val == val2) 
+                {
+                    setVal(p, i, colonne, val * 2);
+                    setVal(p, j, colonne, 0);
+                    k++;
+		}
+			
+                val = 0;
+		val2 = 0;
+            }
+	}
+        
+        if (k > 0) 
+        {
+            return 1;
+	}
+    
+	else 
+        {
+            return 0;
+	}
+}
+
+int fusionBasse(jeu *p, int colonne) 
+{
+    int i, j;
+    int k = 0;
+    int val = 0;
+    int val2 = 0;
+    
+    for (i =(*p).n; i >= 0; i--) 
+    {
+        if (getVal(p, i, colonne) != 0) 
+        {
+            val = getVal(p, i, colonne);
+            
+            for (j = i-1; j >= 0; j--) 
+            {
+                if (getVal(p, j, colonne) != 0) 
+                {
+                    val2 = getVal(p, j, colonne);
+                    break;
+		}
+            }	
+			
+            if (val == val2) 
+            {
+                setVal(p, i, colonne, val*2);
+		setVal(p, j, colonne, 0);
+		k++;
+            }
+			
+            val = 0;
+            val2 = 0;
+        }
+    }
+	
+    if (k > 0) 
+    {
+	return 1;
+    }
+	
+    else 
+    {
+	return 0;
+    }
+}
+
+int tassageGauche(jeu *p, int ligne) {
+
+	int i, j;
+	int k = 0;
+	int indiceCaseVide = -1;
+
+	for (i = 0; i < (*p).n; i++) 
+        {
+            if (getVal(p, ligne, i) == 0 && indiceCaseVide == -1) 
+            {
+                indiceCaseVide = i;
+            }    													//on cherche une case vide en parcourant la ligne, on stocke l'indice
+
+            if (getVal(p, ligne, i) > 0 && indiceCaseVide != -1) 
+            {
+                setVal(p, ligne, indiceCaseVide, getVal(p, ligne, i));	//on met la premiere valeur non nulle dans la premiere case vide
+		setVal(p, ligne, i, 0);
+		indiceCaseVide++;
+		k++;
+            }
+	}
+	
+        if (k > 0) 
+        {
+            return 1;
+	}
+        
+	else 
+        {
+            return 0;
+	}
+}
+
+int tassageDroit(jeu *p, int ligne) 
+{
+    int i, j;
+    int k = 0;
+    int indiceCaseVide = -1;
+
+    for (i = (*p).n; i >= 0; i--) 
+    {
+        if (getVal(p, ligne, i) == 0 && indiceCaseVide == -1) 
+        {
+            indiceCaseVide = i;
+	}
+		
+        if (getVal(p, ligne, i) > 0 && indiceCaseVide != -1) 
+        {
+            setVal(p, ligne, indiceCaseVide, getVal(p, ligne, i));
+            setVal(p, ligne, i, 0);
+            indiceCaseVide--;
+            k++;
+	}
+    }
+
+    if (k > 0) 
+    {
+        return 1;
+    }
+	
+    else 
+    {
+        return 0;
+    }
+}
+
+int tassageHaut(jeu *p, int colonne) 
+{
+    int i, j;
+    int k = 0;
+    int indiceCaseVide = -1;
+
+    for (i = 0; i < (*p).n; i++) 
+    {
+        if (getVal(p, i, colonne) == 0 && indiceCaseVide == -1) 
+        {
+            indiceCaseVide = i;
+	}
+
+	if (getVal(p, i, colonne) > 0 && indiceCaseVide != -1) 
+        {
+		setVal(p, indiceCaseVide, colonne, getVal(p, i, colonne));
+		setVal(p, i, colonne, 0);
+		indiceCaseVide++;
+		k++;
+	}
+    }
+
+    if (k > 0) 
+    {
+        return 1;
+    }
+	
+    else 
+    {
+        return 0;
+    }
+}
+
+int tassageBas(jeu *p, int colonne) 
+{
+    int i, indiceCaseVide;
+    int j = 0;
+    indiceCaseVide = -1;
+
+    for (i = (*p).n; i >= 0; i--) 
+    {
+        if (getVal(p, i, colonne) == 0 && indiceCaseVide == -1) 
+        {
+            indiceCaseVide = i;
+	}
+        
+        if (getVal(p, i, colonne) > 0 && indiceCaseVide != -1) 
+        {
+            setVal(p, indiceCaseVide, colonne, getVal(p, i, colonne));
+            setVal(p, i, colonne, 0);
+            indiceCaseVide--;
+            j++;
+	}
+    }
+    
+    if (j > 0) 
+    {
+        return 1;
+    }
+    
+    else 
+    {
+	return 0;
+    }
+}
 
 /*!
  * Définition de la fonction mouvementLigne
@@ -27,8 +373,29 @@ int saisieD();
  */
 int mouvementLigne(jeu *p, int ligne, int direction)
 {
-    return 0;
+    int i = 0;
+    
+    if (direction == 1) 
+    {
+        i = i + fusionGauche(p, ligne) + tassageGauche(p, ligne);
+    }
+	
+    else 
+    {
+	i = i + fusionDroite(p, ligne) + tassageDroit(p, ligne);
+    }
+
+    if (i > 0) 
+    {
+	return 1;
+    }
+	
+    else 
+    {
+	return 0;
+    }
 }
+
 
 /*!
  * Définition de la fonction mouvementLignes
@@ -43,7 +410,23 @@ int mouvementLigne(jeu *p, int ligne, int direction)
  */
 int mouvementLignes(jeu * p, int direction)
 {
-    return 0;
+    int i;
+    int j = 0;
+    
+    for (i = 0; i < (*p).n; i++) 
+    {
+        j = j + mouvementLigne(p, i, direction);
+    }
+    
+    if (j > 0) 
+    {
+        return 1;
+    }
+    
+    else 
+    {
+        return 0;
+    }
 }
 
 /*!
@@ -59,7 +442,27 @@ int mouvementLignes(jeu * p, int direction)
  */
 int mouvementColonne(jeu * p, int colonne, int direction)
 {
-    return 0;
+    int i;
+    
+    if (direction == 1) 
+    {
+        i = fusionHaute(p, colonne) + tassageHaut(p, colonne);
+    }
+	
+    else 
+    {
+        i = fusionBasse(p, colonne) + tassageBas(p, colonne);
+    }
+
+    if (i > 0) 
+    {
+	return 1;
+    }
+	
+    else 
+    {
+	return 0;
+    }
 }
 
 /*!
@@ -72,9 +475,25 @@ int mouvementColonne(jeu * p, int colonne, int direction)
  * \param p : pointeur sur un jeu
  * \param direction : -1 pour déplacement vers le bas et 1 vers le haut
  */
-int mouvementColonnes(jeu * p, int colonne, int direction)
+int mouvementColonnes(jeu * p, int direction)
 {
-    return 0;
+    int i;
+    int j = 0;
+    
+    for (i = 0; i < (*p).n; i++) 
+    {
+        j = j + mouvementColonne(p, i, direction);
+    }
+    
+    if (j > 0) 
+    {
+	return 1;
+    }
+    
+    else 
+    {
+	return 0;
+    }
 }
 
 /*!
@@ -88,4 +507,26 @@ int mouvementColonnes(jeu * p, int colonne, int direction)
  * 3 : vers la gauche
  * Renvoie 1 si l'on a déplacer au moins une case, 0 sinon 
  */
-int mouvement(jeu * p, int direction);
+int mouvement(jeu * p, int direction)
+{
+    if (direction == 0) 
+    {
+	return mouvementColonnes(p, -1);
+    }
+    else if (direction == 1) 
+    {
+	return mouvementLignes(p, -1);
+    }
+    else if (direction == 2) 
+    {
+	return mouvementColonnes(p, 1);
+    }
+    else if (direction == 3) 
+    {
+	return mouvementLignes(p, 1);
+    }
+    else 
+    {
+	return 0;
+    }
+}
