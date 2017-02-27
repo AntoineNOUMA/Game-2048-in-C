@@ -14,45 +14,48 @@
  * 2 si l'utilisateur souhaite déplacer vers le HAUT
  * 3 si l'utilisateur souhaite déplacer vers la GAUCHE
  */
-int saisieD()
+int saisieD() 
 {
-        //Début du mode saisie des flèches ou de la touche Echap sans appuyer sur entrée pour valider
-	debutTerminalSansR();
+    debutTerminalSansR();
+    
+    toucheFleche saisie = NO_KEY;
+	
+    do  
+    {
+        saisie = lectureFleche();	
+    } while (saisie == NO_KEY);
 
-	toucheFleche touche;//Définition d'une touche
-
-	touche = lectureFleche();//On lit une flèche (ou la touche echap)
-
-	while ( touche != KEY_ESCAPE)//Tant que l'on n'a pas appuyé sur la touche echap
-	{
-                //On affiche quelle flèche a été saisie
-		
-		switch(touche)
-                {
-                    case KEY_DOWN :
-                        return 0;
-                        break;
-                    case KEY_RIGHT :
-                        return 1;
-                        break;
-                    case KEY_UP :
-                        return 2;
-                        break;
-                    case KEY_LEFT :
-                        return 3;
-                        break;
-                    default : 
-                        printf("Pas de flèche saisie");
-                        break;
-                        
-                        
-               }
-                printf("\n");
-                touche = lectureFleche();//On lit une flèche (ou la touche echap)
-	}
-	finTerminalSansR();
-        return -1;
+    if (saisie == KEY_DOWN) 
+    {
+        finTerminalSansR();
+	return 0;
+    }
+	
+    else if (saisie == KEY_RIGHT) 
+    {
+        finTerminalSansR();
+        return 1;
+    }
+	
+    else if (saisie == KEY_UP) 
+    {
+        finTerminalSansR();
+	return 2;
+    }
+	
+    else if (saisie == KEY_LEFT) 
+    {
+        finTerminalSansR();
+        return 3;
+    }
+	
+    else 
+    {
+        finTerminalSansR();
+	return -1;
+    }
 }
+
 
 int fusionGauche(jeu *p, int ligne) 
 {

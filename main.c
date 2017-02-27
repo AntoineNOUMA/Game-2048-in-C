@@ -21,18 +21,16 @@ int main()
     srand (time (NULL));
     
     jeu leJeu;
-    jeu *p =&leJeu;
+    jeu *pJeu =&leJeu;
     int n = 4;
     int valMax = 2048;
     
-    initialiseJeu(p,n,valMax);
+    initialiseJeu(pJeu,n,valMax);
     
     printf("\033[0;0H");
     printf("\033[2J"); 
 
-    
     int saisieMenu, slot, options, options2;
- 
     
     do 
     {
@@ -40,34 +38,34 @@ int main()
         
         if (saisieMenu == 1) 
         {
-            if ((*p).nbCasesLibres == ((*p).n * (*p).n)) 
+            if ((*pJeu).nbCasesLibres == ((*pJeu).n * (*pJeu).n)) 
             {
-                ajouteValAlea(p);
-                ajouteValAlea(p);
+                ajouteValAlea(pJeu);
+                ajouteValAlea(pJeu);
             }
             
-            jouer(p);
+            jouer(pJeu);
             
-            if (gagne(p) == 1) 
+            if (gagne(pJeu) == 1) 
             {
                 printf("Vous avez gagné !\n");
                 
-                rajouteScore(score(p));
+                rajouteScore(score(pJeu));
                 
-                libereMemoire(p);
+                libereMemoire(pJeu);
                 
-                initialiseJeu(p,n,valMax);
+                initialiseJeu(pJeu,n,valMax);
             }
             
-            else if (perdu(p) == 1) 
+            else if (perdu(pJeu) == 1) 
             {
                 printf("Vous avez perdu :/\n");
                 
-                rajouteScore(score(p));
+                rajouteScore(score(pJeu));
                 
-                libereMemoire(p);
+                libereMemoire(pJeu);
                 
-                initialiseJeu(p,n,valMax);
+                initialiseJeu(pJeu,n,valMax);
             }
 	}
         
@@ -93,27 +91,27 @@ int main()
             
             if (slot == 1) 
             {
-                sauvegarde(p,"sauvegarde1.txt");	
+                sauvegarde(pJeu,"sauvegarde1.txt");	
             }
             
             else if (slot == 2) 
             {
-                sauvegarde(p,"sauvegarde2.txt");	
+                sauvegarde(pJeu,"sauvegarde2.txt");	
             }
             
             else if (slot == 3) 
             {
-                sauvegarde(p,"sauvegarde3.txt");
+                sauvegarde(pJeu,"sauvegarde3.txt");
             }
             
             else if (slot == 4) 
             {
-                sauvegarde(p,"sauvegarde4.txt");	
+                sauvegarde(pJeu,"sauvegarde4.txt");	
             }
 			
             else 
             {	
-                sauvegarde(p,"sauvegarde5.txt");
+                sauvegarde(pJeu,"sauvegarde5.txt");
             }
 		
             printf("Partie Sauvgardée dans le slot %d !\n", slot);
@@ -142,27 +140,27 @@ int main()
 
             if (slot == 1) 
             {
-                chargement(p,"sauvegarde1.txt");
+                chargement(pJeu,"sauvegarde1.txt");
             }
             
             else if (slot == 2) 
             {
-                chargement(p,"sauvegarde2.txt");	
+                chargement(pJeu,"sauvegarde2.txt");	
             }
 			
             else if (slot == 3) 
             {
-                chargement(p,"sauvegarde3.txt");
+                chargement(pJeu,"sauvegarde3.txt");
             }
 			
             else if (slot == 4) 
             {
-                chargement(p,"sauvegarde4.txt");	
+                chargement(pJeu,"sauvegarde4.txt");	
             }
 		
             else 
             {
-                chargement(p,"sauvegarde5.txt");
+                chargement(pJeu,"sauvegarde5.txt");
             }
             
             printf("Partie du slot %d chargée !\n", slot);
@@ -179,9 +177,9 @@ int main()
             
             printf(" /!\\ Changer les options réinitialise la partie en cours /!\\ \n");
             
-            printf(" 1 - Changer la valeur maximale (actuellement à %d) \n", (*p).valMax);
+            printf(" 1 - Changer la valeur maximale (actuellement à %d) \n", (*pJeu).valMax);
 			
-            printf(" 2 - Changer la dimension de la grille (actuellement %d * %d) \n",(*p).n,(*p).n);
+            printf(" 2 - Changer la dimension de la grille (actuellement %d * %d) \n",(*pJeu).n,(*pJeu).n);
 			
             printf(" 3 - Revenir sur le menu \n");
 			
@@ -195,30 +193,30 @@ int main()
 
             if (options == 1) 
             {			
-                libereMemoire(p);
+                libereMemoire(pJeu);
 				
                 scanf("%d%*[^\n]",&options2);
 				
                 getchar();
 				
-                initialiseJeu(p,n,options2);
+                initialiseJeu(pJeu,n,options2);
 				
-                (*p).valMax = options2;
+                (*pJeu).valMax = options2;
 				
                 printf("La valeur max a été modifiée : %d\n",options2);
             }
             
             else if (options == 2) 
             {
-                libereMemoire(p);
+                libereMemoire(pJeu);
 				
                 scanf("%d%*[^\n]",&options2);
 				
                 getchar();
 				
-                initialiseJeu(p,options2,valMax);
+                initialiseJeu(pJeu,options2,valMax);
 				
-                (*p).n = options2;
+                (*pJeu).n = options2;
 				
                 printf("La dimension de la grille a été modifiée : %d\n",options2);
             }
